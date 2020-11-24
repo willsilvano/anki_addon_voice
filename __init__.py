@@ -3,7 +3,7 @@ import os
 import random
 import requests
 from anki.hooks import addHook
-from aqt.utils import showInfo
+from aqt.utils import showInfo, showWarning
 from aqt.sound import play
 from aqt.editor import Editor
 
@@ -24,8 +24,11 @@ def getWatsonVoice(editor, voice='random'):
     url = 'https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?voice=en-US_{}V3Voice&download=true&accept=audio%2Fmp3&text={}'.format(
         voice, text)
 
-    response = requests.get(url)
-    response.raise_for_status()
+    try:
+        response = requests.get(url, timeout=10)
+    except:
+        showWarning("Ocorreu um erro, tente novamente!")
+        return
 
     hash = uuid.uuid4().hex
     file = "english-{}.mp3".format(hash)
@@ -51,15 +54,15 @@ def getLisaVoice(editor):
     getWatsonVoice(editor, 'Lisa')
 
 
-def getOlliviaVoice(editor):
-    getWatsonVoice(editor, 'Ollivia')
+def getOliviaVoice(editor):
+    getWatsonVoice(editor, 'Olivia')
 
 
 def addWatsonButton(buttons, editor):
     editor._links['allison_voice'] = getAllisonVoice
     editor._links['michael_voice'] = getMichaelVoice
     editor._links['lisa_voice'] = getLisaVoice
-    editor._links['ollivia_voice'] = getOlliviaVoice
+    editor._links['olivia_voice'] = getOliviaVoice
 
     buttons += [editor._addButton(
         "/home/willian/.local/share/Anki2/addons21/watson_speak/voice.png",
@@ -78,8 +81,8 @@ def addWatsonButton(buttons, editor):
 
     buttons += [editor._addButton(
         "/home/willian/.local/share/Anki2/addons21/watson_speak/voice.png",
-        "ollivia_voice",
-        "Ollivia Voice")]
+        "olivia_voice",
+        "Olivia Voice")]
 
     return buttons
 
