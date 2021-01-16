@@ -18,4 +18,4 @@ Then click on button `View files` button.
 
 Here the folder is: `/home/willian/.local/share/Anki2/addons21`
 
-Just clone this folder inside `addons21` folder and restart Anki.
+Just clone this folder inside `addons21` folder with name `watson_speak` and restart Anki.
